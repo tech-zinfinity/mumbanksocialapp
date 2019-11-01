@@ -9,8 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>in.zinfinity</groupId>
-	<artifactId>mumbanksocialapp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>mum-zinfi</artifactId>
 	<packaging>jar</packaging>
 	<name>mumbanksocialapp</name>
 	<description>social project connect for mum bank elections </description>
