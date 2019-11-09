@@ -31,7 +31,7 @@ public class WhatsppController {
 		
 		 request.getNumbers().stream().forEachOrdered(data ->{
 			 String uri = "http://bulkmsg.onlinemart.co.in/http-api.php?"
-						+ "username=Abhay1&password=pass12345&senderid=SAIRAJ&route=1&"
+						+ "username=Abhay1&password=pass1234&senderid=SAIRAJ&route=1&"
 						+ "number=9773637141&message=something as test";
 				System.out.println("coming here");
 				Flux<String> response  = WebClient.create()

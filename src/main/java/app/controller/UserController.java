@@ -15,6 +15,7 @@ import app.data.entity.User;
 import app.data.repository.UserRepository;
 import app.exception.EntityNotFoundException;
 import app.http.request.LoginRequest;
+import app.http.response.LoginResponse;
 
 @CrossOrigin(allowedHeaders="*")
 @RestController
@@ -34,7 +35,8 @@ public class UserController {
 	}
 	
 	@PostMapping("login")
-	public String login(@RequestBody LoginRequest user) throws EntityNotFoundException{
+	public LoginResponse login(@RequestBody LoginRequest user) throws EntityNotFoundException{
+		System.out.println(user.toString());
 		String loginstring = null;
 		if(!user.getUsername().isEmpty() && !user.getPassword().isEmpty()) {
 			Optional<User> userdb  = userrepo.findByUsername(user.getUsername());
@@ -49,7 +51,7 @@ public class UserController {
 				throw new EntityNotFoundException();
 			}
 		}
-		return loginstring;
+		return LoginResponse.builder().token(loginstring).build();
 	}
-	
+		
 }
