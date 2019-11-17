@@ -16,6 +16,8 @@ import app.data.repository.UserRepository;
 import app.exception.EntityNotFoundException;
 import app.http.request.LoginRequest;
 import app.http.response.LoginResponse;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @CrossOrigin(allowedHeaders="*")
 @RestController
@@ -52,6 +54,11 @@ public class UserController {
 			}
 		}
 		return LoginResponse.builder().token(loginstring).build();
+	}
+	
+	@GetMapping("all")
+	public Flux<User> getAll(){
+		return Flux.fromStream(userrepo.findAll().stream());
 	}
 		
 }
