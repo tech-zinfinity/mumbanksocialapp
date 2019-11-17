@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 
 @CrossOrigin(allowedHeaders="*")
 @RestController
-@RequestMapping("/register")
+@RequestMapping("register")
 public class RegistreationController {
 
 	@Autowired
@@ -27,6 +27,7 @@ public class RegistreationController {
 	
 	@PostMapping("addUser")
 	public Mono<RegisteredUsers> addUser(@RequestBody RegisteredUsers user){
+		System.out.println("adding things up");
 		return userrepo.save(user);
 	}
 	@PostMapping("addTrust")

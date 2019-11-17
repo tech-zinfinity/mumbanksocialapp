@@ -1,5 +1,6 @@
 package app.data.entity;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -11,9 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(collation="registredusers")
+@Document(collection="rusers")
 public class RegisteredUsers {
 
+	@Id
+	private String id;
 	private String name;
 	private String mobileNo;
 	private String emailId;
