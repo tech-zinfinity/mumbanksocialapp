@@ -18,9 +18,5 @@ public class RegistredTrust {
 	@Id
 	private String id;
 	private String name;
-	private String memberfirstName;
-	private String membersecondName;
-	private String mobileno;
-	private String emailId;
-	private String dob;
+	private Members[] members;
 }
