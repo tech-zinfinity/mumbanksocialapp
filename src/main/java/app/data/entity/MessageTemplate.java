@@ -1,7 +1,5 @@
 package app.data.entity;
 
-import java.time.LocalDate;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,23 +8,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document("contacts")
+@Document("message-template")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Contact {
+public class MessageTemplate {
 
 	@Id
 	private String id;
-	
-	private String name;
-	
-	private String phoneno1;
-	
-	private String phoneno2;
-	
-	private LocalDate dob;
-	
-	private String category;
+	private String message;
+	private String title;
+	private boolean active;
+	private String auther;
+	private String type;
 }

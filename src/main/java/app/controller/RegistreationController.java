@@ -1,5 +1,6 @@
 package app.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.data.entity.Contact;
 import app.data.entity.RegisteredUsers;
 import app.data.entity.RegistredTrust;
+import app.data.repository.ContactRepo;
 import app.data.repository.RegisterdUserRepo;
 import app.data.repository.RegistredTrustRepo;
 import reactor.core.publisher.Flux;
@@ -24,15 +27,49 @@ public class RegistreationController {
 	private RegisterdUserRepo userrepo;
 	@Autowired
 	private RegistredTrustRepo trustrepo;
+	@Autowired ContactRepo contactrepo;
 	
 	@PostMapping("addUser")
-	public Mono<RegisteredUsers> addUser(@RequestBody RegisteredUsers user){
+	public Mono<Contact> addUser(@RequestBody RegisteredUsers user){
 		System.out.println("adding things up");
-		return userrepo.save(user);
+		
+		return userrepo.save(user)
+				.flatMap(data ->{
+					return contactrepo.save(Contact.builder().
+							name(data.getName())
+							.phoneno1(data.getMobileNo1())
+							.phoneno2(data.getMobileNo2())
+							.dob(data.getDob())
+							.category(data.getCategory())
+							.build());
+				}).doOnError(err -> new Exception());
 	}
+	
 	@PostMapping("addTrust")
-	public Mono<RegistredTrust> addTrust(@RequestBody RegistredTrust user){
-		return trustrepo.save(user);
+	public Flux<Object> addTrust(@RequestBody RegistredTrust user){
+		return Flux.create(sink ->{
+			trustrepo.save(user).subscribe(data ->{
+				data.getMembers().stream().forEach(value ->{
+					contactrepo
+					.save(Contact.builder()
+							.name(value.getMemname())
+							.phoneno1(value.getMobileno1())
+							.phoneno2(value.getMobileno2())
+							.dob(value.getDob())
+							.category(value.getCategory()).build())
+					.subscribe(t ->{
+						sink.next(t);
+					});
+				});
+				sink.complete();
+			});
+			
+		})
+		.doOnError(err -> {
+			err.printStackTrace();
+			new Exception();
+			
+		}).share();
 	}
 	@GetMapping("getAllUser")
 	public Flux<RegisteredUsers> getAllUser(){

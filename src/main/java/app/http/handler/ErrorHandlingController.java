@@ -15,7 +15,7 @@ public class ErrorHandlingController {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> generateCommonException(Exception e) throws Exception{
-		
+		e.printStackTrace();
 		return new ResponseEntity<ExceptionResponse>(		
 				ExceptionResponse.builder()
 				.id(RandomStringGeneratorUtility.generatRandonString())

@@ -1,5 +1,7 @@
 package app.data.entity;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,5 +20,5 @@ public class RegistredTrust {
 	@Id
 	private String id;
 	private String name;
-	private Members[] members;
+	private ArrayList<Members> members;
 }

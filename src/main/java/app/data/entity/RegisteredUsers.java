@@ -1,5 +1,7 @@
 package app.data.entity;
 
+import java.time.LocalDate;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,7 +20,10 @@ public class RegisteredUsers {
 	@Id
 	private String id;
 	private String name;
-	private String mobileNo;
+	private String mobileNo1;
+	private String mobileNo2;
 	private String emailId;
-	private String dob;
+	private LocalDate dob;
+	private String category;
+
 }

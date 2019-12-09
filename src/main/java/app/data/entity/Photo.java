@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 public class Photo {
 
 	@Id
-	@Indexed
 	private String id;
 	private String label;
 	private String url;

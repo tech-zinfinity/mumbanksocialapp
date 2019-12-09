@@ -29,4 +29,5 @@ public class ContactController {
 	public Flux<Contact> getAllContacts(){
 		return contactrepo.findAll();
 	}
+	
 }

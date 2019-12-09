@@ -1,5 +1,7 @@
 package app.data.entity;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +14,10 @@ import lombok.NoArgsConstructor;
 public class Members {
 
 	private String memname;
-	private String mobileno;
+	private String mobileno1;
+	private String mobileno2;
 	private String emailId;
-	private String dob;
+	private LocalDate dob;
+	private String category;
+
 }
