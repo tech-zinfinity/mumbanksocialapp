@@ -3,6 +3,7 @@ package app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,9 @@ import app.data.repository.ContactRepo;
 import app.data.repository.RegisterdUserRepo;
 import app.data.repository.RegistredTrustRepo;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
 
 @CrossOrigin(allowedHeaders="*")
 @RestController
@@ -88,7 +91,34 @@ public class RegistreationController {
 	}
 	
 	@PostMapping("addCategory")
-	public Mono<Category> addCategory(@RequestBody Category category){
-		return categoryrepo.save(category);
+	public Flux<Category> addCategory(@RequestBody Category category){
+		return Flux.create((FluxSink<Category> sink) ->{
+			categoryrepo.save(category).subscribe(data ->{
+				categoryrepo.findAll().subscribe(t ->{
+					sink.next(t);
+				});
+				sink.complete();
+			});
+		});
 	}
+	
+	public Flux<Category> addCategorys(@RequestBody Category category){
+		return Flux.generate( (SynchronousSink<Category> sink) ->{
+			categoryrepo.save(category).subscribe(data ->{
+				categoryrepo.findAll().subscribe(d ->{
+					System.out.println(d);
+					sink.next(d);
+				});
+				sink.complete();
+			});
+		});
+	}
+	
+	
+	@DeleteMapping("deleteCategory")
+	public Mono<Void> deleteCategory(Category c){
+		return categoryrepo.deleteAll();
+	}
+	
+
 }
