@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.data.entity.Category;
 import app.data.entity.Contact;
 import app.data.entity.RegisteredUsers;
 import app.data.entity.RegistredTrust;
+import app.data.repository.CategoryRepo;
 import app.data.repository.ContactRepo;
 import app.data.repository.RegisterdUserRepo;
 import app.data.repository.RegistredTrustRepo;
@@ -23,11 +25,10 @@ import reactor.core.publisher.Mono;
 @RequestMapping("register")
 public class RegistreationController {
 
-	@Autowired
-	private RegisterdUserRepo userrepo;
-	@Autowired
-	private RegistredTrustRepo trustrepo;
+	@Autowired RegisterdUserRepo userrepo;
+	@Autowired RegistredTrustRepo trustrepo;
 	@Autowired ContactRepo contactrepo;
+	@Autowired CategoryRepo categoryrepo;
 	
 	@PostMapping("addUser")
 	public Mono<Contact> addUser(@RequestBody RegisteredUsers user){
@@ -53,8 +54,8 @@ public class RegistreationController {
 					contactrepo
 					.save(Contact.builder()
 							.name(value.getMemname())
-							.phoneno1(value.getMobileno1())
-							.phoneno2(value.getMobileno2())
+							.phoneno1(value.getMobilenoF())
+							.phoneno2(value.getMobilenoS())
 							.dob(value.getDob())
 							.category(value.getCategory()).build())
 					.subscribe(t ->{
@@ -75,8 +76,19 @@ public class RegistreationController {
 	public Flux<RegisteredUsers> getAllUser(){
 		return userrepo.findAll();
 	}
+	
 	@GetMapping("getAllTrust")
 	public Flux<RegistredTrust> getAllTrust(){
 		return trustrepo.findAll();
+	}
+	
+	@GetMapping("getAllCategory")
+	public Flux<Category> getAllCategory(){
+		return categoryrepo.findAll();
+	}
+	
+	@PostMapping("addCategory")
+	public Mono<Category> addCategory(@RequestBody Category category){
+		return categoryrepo.save(category);
 	}
 }

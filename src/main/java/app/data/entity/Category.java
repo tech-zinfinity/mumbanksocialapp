@@ -1,7 +1,5 @@
 package app.data.entity;
 
-import java.util.ArrayList;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,16 +8,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Document("category")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(collection="rtrusts")
-public class RegistredTrust {
-	
+public class Category {
+
 	@Id
 	private String id;
-	private String name;
-	private ArrayList<Members> members;
+	
 	private String category;
+	
+	private String code;
+	
 }

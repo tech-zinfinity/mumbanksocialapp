@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class Members {
 
 	private String memname;
-	private String mobileno1;
-	private String mobileno2;
+	private String mobilenoF;
+	private String mobilenoS;
 	private String emailId;
 	private LocalDate dob;
 	private String category;
