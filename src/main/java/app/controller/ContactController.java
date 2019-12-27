@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.data.entity.Contact;
-import app.data.entity.Members;
 import app.data.entity.RegisteredUsers;
 import app.data.repository.ContactRepo;
 import reactor.core.publisher.Flux;
@@ -39,7 +38,7 @@ public class ContactController {
 	}
 	
 	@GetMapping("deleteContactByMenId/{id}")
-	public Mono<Void> deleteContactByMenId(@PathVariable String id){
+	public Mono<Long> deleteContactByMenId(@PathVariable String id){
 		System.out.println("coming here "+ id);
 		return contactrepo.deleteByMemId(id);
 	}

@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public interface ContactRepo extends ReactiveMongoRepository<Contact, String>{
 
 	@Query(value="{'memId' : ?0}", delete=true)
-	public Mono<Void> deleteByMemId(String memId);
+	public Mono<Long> deleteByMemId(String memId);
 	
 	@Query(value="{'userId' : ?0}", delete=true)
 	public Mono<Void> deleteByUserId(String userId);

@@ -4,6 +4,7 @@ package app.controller;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,6 +55,7 @@ public class RegistreationController {
 							.category(data.getCategory())
 							.userId(data.getId())
 							.RegistrationFlag(UserRegistrationFlagType.RUSER.toString())
+							.email(data.getEmailId())
 							.build());
 				}).doOnError(err -> new Exception());
 	}
@@ -73,6 +75,7 @@ public class RegistreationController {
 							.phoneno1(value.getMobilenoF())
 							.phoneno2(value.getMobilenoS())
 							.dob(value.getDob())
+							.email(value.getEmailId())
 							.category(value.getCategory()).build())
 					.subscribe(t ->{
 						sink.next(t);
@@ -173,6 +176,7 @@ public class RegistreationController {
 						.phoneno1(m.getMobilenoF())
 						.phoneno2(m.getMobilenoS())
 						.dob(m.getDob())
+						.email(m.getEmailId())
 						.category(value.getCategory()).build())
 				.flatMap(tata ->{
 					return Mono.just(m);
@@ -182,6 +186,7 @@ public class RegistreationController {
 	}
 	
 	@PostMapping("deleteMemberOfTrust")
+	@Transactional
 	public Mono<Members> deleteMemberOfTrust(@RequestBody UpdateMemberRequest request){
 		return this.trustrepo.findById(request.getTrustId()).flatMap(data ->{
 			var m = data.getMembers();
@@ -189,7 +194,9 @@ public class RegistreationController {
 			data.setMembers(m);
 			if(bool==true) {
 				return trustrepo.save(data).flatMap(test ->{
+					System.out.println("coming here");
 					return contactrepo.deleteByMemId(request.getMember().getId()).flatMap(value ->{
+						System.out.println("coming here down");
 						return Mono.just(request.getMember());
 					});
 				});
