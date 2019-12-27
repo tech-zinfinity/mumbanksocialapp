@@ -13,4 +13,7 @@ public interface ContactRepo extends ReactiveMongoRepository<Contact, String>{
 	
 	@Query(value="{'userId' : ?0}", delete=true)
 	public Mono<Void> deleteByUserId(String userId);
+	
+	@Query(value="{'userId' : ?0}")
+	public Mono<Contact> findByUserId(String userId);
 }

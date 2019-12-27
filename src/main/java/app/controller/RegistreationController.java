@@ -1,6 +1,8 @@
 package app.controller;
 
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import app.constant.UserRegistrationFlagType;
 import app.data.entity.Category;
 import app.data.entity.Contact;
+import app.data.entity.Members;
 import app.data.entity.RegisteredUsers;
 import app.data.entity.RegistredTrust;
 import app.data.repository.CategoryRepo;
 import app.data.repository.ContactRepo;
 import app.data.repository.RegisterdUserRepo;
 import app.data.repository.RegistredTrustRepo;
+import app.http.request.UpdateMemberRequest;
 import app.utitlity.RandomStringGeneratorUtility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -59,7 +63,6 @@ public class RegistreationController {
 		return Flux.create(sink ->{
 			user.getMembers().forEach(value -> {
 				value.setId(String.valueOf(RandomStringGeneratorUtility.generatRandonString()));
-				System.out.println("coming here");
 			});
 			trustrepo.save(user).subscribe(data ->{
 				data.getMembers().stream().forEach(value ->{
@@ -144,5 +147,55 @@ public class RegistreationController {
 		return trustrepo.save(trust);
 	}
 	
-
+	@PostMapping("updateUser")
+	public Mono<RegisteredUsers> updateUser(@RequestBody RegisteredUsers user){
+		return userrepo.save(user);
+	}
+	
+	@GetMapping("deleteRUser/{id}")
+	public Mono<Void> deleteRUser(@PathVariable String id) {
+		return userrepo.deleteById(id);
+	}
+	
+	@PostMapping("addMemberToTrust")
+	public Mono<Members> updateMemberToTrust(@RequestBody UpdateMemberRequest request){
+		return this.trustrepo.findById(request.getTrustId()).flatMap(data ->{
+			Members m =request.getMember();
+			m.setId(String.valueOf(RandomStringGeneratorUtility.generatRandonString()));
+			ArrayList<Members> ma = data.getMembers();
+			ma.add(m);
+			data.setMembers(ma);
+			return trustrepo.save(data).flatMap(value ->{
+				return contactrepo
+				.save(Contact.builder()
+						.memId(m.getId())
+						.name(m.getMemname())
+						.phoneno1(m.getMobilenoF())
+						.phoneno2(m.getMobilenoS())
+						.dob(m.getDob())
+						.category(value.getCategory()).build())
+				.flatMap(tata ->{
+					return Mono.just(m);
+				});
+			});
+		});
+	}
+	
+	@PostMapping("deleteMemberOfTrust")
+	public Mono<Members> deleteMemberOfTrust(@RequestBody UpdateMemberRequest request){
+		return this.trustrepo.findById(request.getTrustId()).flatMap(data ->{
+			var m = data.getMembers();
+			var bool = m.removeIf(some -> some.getId().equals(request.getMember().getId()));
+			data.setMembers(m);
+			if(bool==true) {
+				return trustrepo.save(data).flatMap(test ->{
+					return contactrepo.deleteByMemId(request.getMember().getId()).flatMap(value ->{
+						return Mono.just(request.getMember());
+					});
+				});
+			}else {
+				return Mono.error(new Exception());
+			}
+		});
+	}
 }

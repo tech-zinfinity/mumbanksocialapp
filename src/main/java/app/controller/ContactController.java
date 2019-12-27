@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.data.entity.Contact;
+import app.data.entity.Members;
+import app.data.entity.RegisteredUsers;
 import app.data.repository.ContactRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -48,5 +50,18 @@ public class ContactController {
 		return contactrepo.deleteByUserId(id);
 	}
 	
-	
+	@PostMapping("updateContactByRUserId")
+	public Mono<Contact> updateContactByRUserId(@RequestBody RegisteredUsers user){
+		
+		return contactrepo.findByUserId(user.getId()).flatMap(data ->{
+			if(user.getMobileNo2() != null || !user.getMobileNo2().isBlank()) {data.setPhoneno2(user.getMobileNo2());}
+			data.setPhoneno1(user.getMobileNo1());
+			data.setName(user.getName());
+			data.setDob(user.getDob());
+			data.setCategory(user.getCategory());
+			return contactrepo.save(data);
+		});
+		
+	}
+
 }
