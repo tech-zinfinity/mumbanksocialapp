@@ -29,4 +29,10 @@ public class Contact {
 	private LocalDate dob;
 	
 	private String category;
+	
+	private String userId;
+	
+	private String RegistrationFlag;
+	
+	private String memId;
 }

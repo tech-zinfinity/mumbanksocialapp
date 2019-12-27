@@ -3,6 +3,7 @@ package app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +30,23 @@ public class ContactController {
 	public Flux<Contact> getAllContacts(){
 		return contactrepo.findAll();
 	}
+	
+	@GetMapping("deleteContact/{id}")
+	public Mono<Void> updateContact(@PathVariable String id){
+		return contactrepo.deleteById(id);
+	}
+	
+	@GetMapping("deleteContactByMenId/{id}")
+	public Mono<Void> deleteContactByMenId(@PathVariable String id){
+		System.out.println("coming here "+ id);
+		return contactrepo.deleteByMemId(id);
+	}
+	
+	@GetMapping("deleteContactByUserId/{id}")
+	public Mono<Void> deleteByUserId(@PathVariable String id){
+		System.out.println("coming here "+ id);
+		return contactrepo.deleteByUserId(id);
+	}
+	
 	
 }
