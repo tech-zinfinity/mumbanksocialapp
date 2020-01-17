@@ -1,34 +1,31 @@
 package app.data.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "user")
+@Document("feedback")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-
+@Builder
+public class FeedBack {
+	
 	@Id
-	@Indexed
 	private String id;
-	
-	private String username;
-	
-	private String password;
-	
-	private String[] permissions;
-	
-	private String role;
-	
-	private boolean status;
-	
+
+	private String name;
 	private String mobileno;
-	
 	private String email;
+	private String feedback;
+	
+	@CreatedDate
+	private LocalDateTime createdOn;
 }
