@@ -30,7 +30,7 @@ public class BithrdayMessageScheduler {
 		userrepo.findAll().stream().filter(data -> data.getRole().equalsIgnoreCase("ADMIN")).forEach(test ->{
 			List<Contact> list = bdservice.getForToday(LocalDate.now().toString());
 			System.out.println(list);
-				if(!list.isEmpty()) {
+			if(!list.isEmpty()) {
 					list.stream().forEachOrdered(contact ->{
 						System.out.println("coming here");
 						message = message.concat("\n"+contact.getName()+"\t"+contact.getPhoneno1());

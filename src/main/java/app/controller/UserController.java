@@ -41,8 +41,9 @@ public class UserController {
 	public LoginResponse login(@RequestBody LoginRequest user) throws EntityNotFoundException{
 		System.out.println(user.toString());
 		String loginstring = null;
+		Optional<User> userdb = Optional.empty();
 		if(!user.getUsername().isEmpty() && !user.getPassword().isEmpty()) {
-			Optional<User> userdb  = userrepo.findByUsername(user.getUsername());
+			userdb  = userrepo.findByUsername(user.getUsername());
 			if(userdb.isPresent()) {
 				if(user.getPassword().equals(userdb.get().getPassword())) {
 					String input = user.getUsername()+":"+user.getPassword();
@@ -54,7 +55,7 @@ public class UserController {
 				throw new EntityNotFoundException();
 			}
 		}
-		return LoginResponse.builder().token(loginstring).build();
+		return LoginResponse.builder().token(loginstring).user(userdb.get()).build();
 	}
 	
 	@GetMapping("all")
