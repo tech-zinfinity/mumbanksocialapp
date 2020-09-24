@@ -22,6 +22,7 @@ public class BirthDayController {
 	
 	@GetMapping("getForToday/{td}")
 	public List<Contact> getTodaysBOD(@PathVariable String td){
+		System.out.println(td);
 		return bdservice.getForToday(td);
 	}
 	

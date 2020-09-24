@@ -19,8 +19,10 @@ public class BirthDayService {
 		List<Contact> finalC = new ArrayList<>();
 		contactrepo.findAll().parallelStream().forEach(data ->{
 			if(data.getDob() != null) {
-				if(LocalDate.parse(td).getMonth().equals(data.getDob().getMonth()) && LocalDate.parse(td).getDayOfWeek().equals(data.getDob().getDayOfWeek())) {
-				finalC.add(data);
+				if(LocalDate.parse(td).getMonth().equals(data.getDob().getMonth())) {
+					if(LocalDate.parse(td).getDayOfMonth() == data.getDob().getDayOfMonth()) {
+						finalC.add(data);
+					}
 				}
 			}
 		});
