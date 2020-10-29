@@ -40,15 +40,12 @@ public class UserController {
 	
 	@PostMapping("login")
 	public LoginResponse login(@RequestBody LoginRequest user) throws EntityNotFoundException{
-		System.out.println(user.toString());
-		String loginstring = null;
 		Optional<User> userdb = Optional.empty();
 		if(!user.getUsername().isEmpty() && !user.getPassword().isEmpty()) {
 			userdb  = userrepo.findByUsername(user.getUsername());
 			if(userdb.isPresent()) {
 				if(user.getPassword().equals(userdb.get().getPassword())) {
-					String input = user.getUsername()+":"+user.getPassword();
-					loginstring = Base64.getEncoder().encodeToString(input.getBytes());
+					return LoginResponse.builder().token(null).user(userdb.get()).build();
 				}else {
 					throw new EntityNotFoundException();
 				}
@@ -56,7 +53,7 @@ public class UserController {
 				throw new EntityNotFoundException();
 			}
 		}
-		return LoginResponse.builder().token(loginstring).user(userdb.get()).build();
+		return LoginResponse.builder().token(null).user(null).build();
 	}
 	
 	@GetMapping("all")

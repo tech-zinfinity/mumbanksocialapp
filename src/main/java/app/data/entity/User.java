@@ -31,4 +31,10 @@ public class User {
 	private String mobileno;
 	
 	private String email;
+	
+	private String name;
+	
+	private String phone;
+	
+	private String profilepic;
 }
