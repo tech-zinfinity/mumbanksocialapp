@@ -107,7 +107,8 @@ public class BlogController {
 		return this.tagrepo.findAll();
 	}
 	
-	public Blog addBlog(Blog blog) {
+	@PostMapping("/addNewBlog")
+	public Blog addBlog(@RequestBody Blog blog) {
 		var b = blog;
 		var c = b.getTags().stream().map(tag ->{
 			if(!tag.isAdded()) {
@@ -125,6 +126,48 @@ public class BlogController {
 		
 		blog.setTags(c);
 		return blogrepo.insert(blog);
+	}
+	
+	@GetMapping("/requestForPublish/{id}")
+	public Blog requestToPublish(@PathVariable("id") String id) {
+		var b = blogrepo.findById(id);
+		if(b.isPresent()) {
+			var c= b.get();
+			c.setStatus("REQUESTED");
+			return blogrepo.save(c);
+					
+		}
+		return null;
+	}
+	
+	@GetMapping("/approveToPublish/{id}")
+	public Blog approveToPublish(@PathVariable("id") String id) {
+		var b = blogrepo.findById(id);
+		if(b.isPresent()) {
+			var c= b.get();
+			c.setStatus("PUBLISHED");
+			c.setActive(true);
+			return blogrepo.save(c);
+					
+		}
+		return null;
+	}
+	
+	@GetMapping("/deactivateBlog/{id}")
+	public Blog deactivateBlog(@PathVariable("id") String id) {
+		var b = blogrepo.findById(id);
+		if(b.isPresent()) {
+			var c= b.get();
+			c.setActive(false);
+			return blogrepo.save(c);
+					
+		}
+		return null;
+	}
+	
+	@GetMapping("/getBlogsByUserId/{id}")
+	public List<Blog> getBlogsByUserId(@PathVariable("id") String id) {
+		return blogrepo.findByAuthor(id);
 	}
 	
 	

@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-@Document(collection="BlogCategory")
+@Document(collection="Blog")
 public class Blog {
 
 	@Id
@@ -36,4 +36,6 @@ public class Blog {
 	private int disLikes;
 	private List<BlogComment> comments;
 	private String status;
+	@Builder.Default
+	private boolean active = false;
 }
