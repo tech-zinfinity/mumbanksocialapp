@@ -20,6 +20,7 @@ import app.data.repository.BlogCommentRepository;
 import app.data.repository.BlogRepository;
 import app.data.repository.BlogTagRepository;
 import app.http.request.NameRequest;
+import app.service.BlogService;
 import reactor.core.publisher.Mono;
 
 @CrossOrigin(allowedHeaders="*")
@@ -170,5 +171,10 @@ public class BlogController {
 		return blogrepo.findByAuthor(id);
 	}
 	
+	@Autowired BlogService blogService;
+	public List<Blog> getgetLatestBlogsByLimit(@PathVariable("limit") String limit){
+		return blogService.getLatestActiveBlogsByLimit(Integer.parseInt(limit));
+		
+	}
 	
 }
