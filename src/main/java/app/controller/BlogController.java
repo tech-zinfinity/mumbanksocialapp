@@ -1,6 +1,8 @@
 package app.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import app.data.entity.Blog;
 import app.data.entity.BlogCategory;
+import app.data.entity.BlogComment;
 import app.data.entity.BlogTag;
 import app.data.repository.BlogCategoryRepository;
 import app.data.repository.BlogCommentRepository;
@@ -171,10 +174,55 @@ public class BlogController {
 		return blogrepo.findByAuthor(id);
 	}
 	
+	@GetMapping("/getBlogsById/{id}")
+	public Optional<Blog> getBlogsById(@PathVariable("id") String id) {
+		return blogrepo.findById(id);
+	}
+	
 	@Autowired BlogService blogService;
 	public List<Blog> getgetLatestBlogsByLimit(@PathVariable("limit") String limit){
 		return blogService.getLatestActiveBlogsByLimit(Integer.parseInt(limit));
 		
+	}
+	
+	@PostMapping("/editBlog")
+	public Blog editBlog(@RequestBody Blog blog) {
+		var b  = blogrepo.findById(blog.getId());
+		if(b.isPresent()){
+			var c = b.get();
+			c.setTitle(blog.getTitle());
+			c.setParagraph(blog.getParagraph());
+			c.setCoverImage(blog.getCoverImage());
+			c.setTags(blog.getTags());
+			c.setCategory(blog.getCategory());
+			return blogrepo.save(c);
+		}
+		else {
+			return null;
+		}
+	}
+	
+	@PostMapping("/addCommentToBlog/{id}")
+	public Blog editBlog(@RequestBody BlogComment comment, @PathVariable("id") String id) {
+		var b  = blogrepo.findById(id);
+		if(b.isPresent()){
+			var c = b.get();
+			var comments  = c.getComments();
+			if(comments.size()>0) {
+				comments.add(comment);
+				c.setComments(comments);
+				c.setCommetCount(c.getCommetCount()+1);
+				return blogrepo.save(c);
+			}else {
+				c.setComments(Arrays.asList(comment));
+				c.setComments(comments);
+				c.setCommetCount(c.getCommetCount()+1);
+				return blogrepo.save(c);
+			}
+		}
+		else {
+			return null;
+		}
 	}
 	
 }

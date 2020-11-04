@@ -10,14 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-@Document(collection="BlogComment")
 public class BlogComment {
 
-	@Id
-	private String id;
 	private String message;
 	private User user;
 	private LocalDateTime createdOn;
-	private String blogId;
 	
 }
