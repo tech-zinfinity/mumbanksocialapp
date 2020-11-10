@@ -1,11 +1,17 @@
 package app.controller;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -149,6 +155,7 @@ public class BlogController {
 		var b = blogrepo.findById(id);
 		if(b.isPresent()) {
 			var c= b.get();
+			c.setPublishedOn(LocalDateTime.now());
 			c.setStatus("PUBLISHED");
 			c.setActive(true);
 			return blogrepo.save(c);
@@ -224,5 +231,57 @@ public class BlogController {
 			return null;
 		}
 	}
+	
+	@GetMapping("getAll/{page}/{size}")
+	public Page<Blog> getAllBlogs(@PathVariable("page") int page, @PathVariable("size") int size){
+		return blogrepo.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdOn")));
+	}
+	
+	@GetMapping("getAllRequestedForApprovalBlogs")
+	public List<Blog> getAllRequestedForApprovalBlogs(){
+		return blogService.getLatestDarftBlogsSortedByDate();
+	}
+	
+	@GetMapping("getLatestRequestedBlogsSortedByDate")
+	public List<Blog> getLatestRequestedBlogsSortedByDate(){
+		return blogService.getLatestRequestedBlogsSortedByDate();
+	}
+	
+	@GetMapping("getAll/likeBlog/{id}")
+	public Blog likeBlog(@PathVariable("id") String id){
+		var b = blogrepo.findById(id);
+		if(b.isPresent()) {
+			var c = b.get();
+			c.setLikes(c.getLikes()+1);
+			return blogrepo.save(c);
+		}else {
+			return null;
+		}
+	}
+	
+	@GetMapping("getAll/disLikeBlog/{id}")
+	public Blog disLikeBlog(@PathVariable("id") String id){
+		var b = blogrepo.findById(id);
+		if(b.isPresent()) {
+			var c = b.get();
+			c.setDisLikes(c.getDisLikes()+1);
+			return blogrepo.save(c);
+		}else {
+			return null;
+		}
+	}
+	
+	@GetMapping("getAll/addView/{id}")
+	public Blog addView(@PathVariable("id") String id){
+		var b = blogrepo.findById(id);
+		if(b.isPresent()) {
+			var c = b.get();
+			c.setVeiwCount(c.getVeiwCount()+1);
+			return blogrepo.save(c);
+		}else {
+			return null;
+		}
+	}
+	
 	
 }

@@ -15,4 +15,7 @@ public interface BlogCategoryRepository extends MongoRepository<BlogCategory, St
 	
 	@Query(value = "{'name':?0}", delete=true)
 	public void deleteByName(String name);
+	
+	@Query(value ="{'active':?0}")
+	public List<BlogCategory> findByActive(boolean active);
 }

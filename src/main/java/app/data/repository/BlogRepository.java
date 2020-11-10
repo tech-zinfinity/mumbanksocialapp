@@ -16,4 +16,6 @@ public interface BlogRepository extends MongoRepository<Blog, String>{
 //    mongoOperation.find(query, Patients.class);
 	@Query("{'author.id' : ?0}")
 	List<Blog> findByAuthor(String id);
+	
+	
 }
