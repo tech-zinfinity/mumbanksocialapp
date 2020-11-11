@@ -112,6 +112,16 @@ public class BlogController {
 		return this.catrepo.findAll();
 	}
 	
+	@GetMapping("/deleteBlog/{id}")
+	public void deleteBlogById(@PathVariable("id")String id) {
+		this.blogrepo.deleteById(id);
+	}
+	
+	@GetMapping("/rejectBlog/{id}")
+	public Blog rejectBlog(@PathVariable("id")String id) {
+		return this.blogService.rejectBlog(id);
+	}
+	
 	@GetMapping("/getAllTags")
 	public List<BlogTag> getAllTags(){
 		return this.tagrepo.findAll();

@@ -92,4 +92,28 @@ public class HomeController {
 	public List<Blog> getAllActivePostsByCategoryId(@PathVariable("id") String id){
 		return blogservice.getLatestBlogByCategory(id, 0);
 	}
+	
+	@GetMapping("getAllRequestedBlogs")
+	public List<Blog> getAllRequestedBlogs() {
+		return blogservice.getAllRequestedBlogs();
+	}
+	
+
+	@GetMapping("getAllApprovedBlogs")
+	public List<Blog> getAllApprovedBlogs() {
+		return blogservice.getAllApprovedBlogs();
+	}
+	
+
+	@GetMapping("getAllRejectedBlogs")
+	public List<Blog> getAllRejectedBlogs() {
+		return blogservice.getAllRejectedBlogs();
+	}
+	
+	@GetMapping("getAllDraftBlogs")
+	public List<Blog> getAllDraftBlogs() {
+		return blogservice.getAllDraftBlogs();
+	}
+	
+	
 }
