@@ -1,6 +1,9 @@
 package app.service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -84,6 +87,24 @@ public class BlogService {
 		}
 	}
 	
+	public List<Blog> getAllApprovedPopularBlogsByLimit(int limit) {
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("status").is("PUBLISHED"));
+			query.addCriteria(Criteria.where("active").is(true));
+			query.limit(limit);
+			query.with(Sort.by(Sort.Direction.DESC,"veiwCount"));
+			return ops.find(query, Blog.class);
+//			return f.stream()
+//					.sorted(Comparator.nullsLast((a,b) -> b.getPublishedOn().compareTo(a.getPublishedOn())))
+//					.collect(Collectors.toList());
+		}
+		catch(Exception e){
+			log.info("Fatal", e.getMessage());
+			return null;
+		}
+	}
+	
 	public List<Blog> getAllRejectedBlogs() {
 		try {
 			Query query = new Query();
@@ -114,6 +135,7 @@ public class BlogService {
 			   Query query = new Query();
 			   query.addCriteria(Criteria.where("category.id").is(catId));
 			   query.addCriteria(Criteria.where("status").is("PUBLISHED"));
+			   query.addCriteria(Criteria.where("active").is(true));
 			   if(limit!=0) {
 				   query.limit(limit);
 			   }

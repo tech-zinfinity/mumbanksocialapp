@@ -115,5 +115,13 @@ public class HomeController {
 		return blogservice.getAllDraftBlogs();
 	}
 	
+	@GetMapping("getAllApprovedPopularBlogsByLimit/{limit}")
+	public List<Blog> getAllApprovedPopularBlogsByLimit(@PathVariable("limit") int limit) {
+		return blogservice.getAllApprovedPopularBlogsByLimit(limit);
+	}
 	
+	@GetMapping("/getAllActivePostsByCategoryIdByLimit/{id}/{limit}")
+	public List<Blog> getAllActivePostsByCategoryIdByLimit(@PathVariable("id") String id, @PathVariable("limit") int limit){
+		return blogservice.getLatestBlogByCategory(id, limit);
+	}
 }
