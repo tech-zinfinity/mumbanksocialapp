@@ -12,6 +12,6 @@ RUN mvn -f /app/pom.xml clean package -Djdk.tls.client.protocols=TLSv1,TLSv1.1,T
 #
 RUN mkdir -p /app/_cache
 COPY /target/mum-zinfi-2.2.0.RELEASE.jar /app/app.jar
-#VOLUME /app/_cache
+VOLUME /app/_cache
 EXPOSE 8080
 CMD ["java", "-Xvirtualized", "-Xshareclasses", "-Xshareclasses:name=sum", "-Xshareclasses:cacheDir=/app/_cache","-Djdk.tls.client.protocols=TLSv1,TLSv1.1,TLSv1.2", "-jar", "/app/app.jar"]
