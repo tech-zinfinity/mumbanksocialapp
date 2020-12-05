@@ -14,4 +14,4 @@ RUN mkdir -p /app/_cache
 COPY target/mumbanksocialapp-0.0.1-SNAPSHOT.jar /app/app.jar
 VOLUME /app/_cache
 EXPOSE 8080
-CMD ["java", "-Xvirtualized", "-Xshareclasses", "-Xshareclasses:name=sum", "-Xshareclasses:cacheDir=/app/_cache", "-jar", "/app/app.jar"]
+CMD ["java", "-Xvirtualized", "-Xshareclasses", "-Xshareclasses:name=sum", "-Xshareclasses:cacheDir=/app/_cache","-Djdk.tls.client.protocols=TLSv1,TLSv1.1,TLSv1.2", "-jar", "/app/app.jar"]
