@@ -10,5 +10,5 @@ import reactor.core.publisher.Mono;
 public interface BlogDisLikesReactiveRepositiry extends ReactiveMongoRepository<BlogDisLikes, String>{
 
 	@Query("{'blogId':?0}")
-	public Mono<BlogLikes> findByBlogId(String blogId);
+	public Mono<BlogDisLikes> findByBlogId(String blogId);
 }

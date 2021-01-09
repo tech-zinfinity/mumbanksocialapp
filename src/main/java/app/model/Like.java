@@ -14,6 +14,5 @@ public class Like {
 	
 	private String userId;
 	private String userName;
-	@CreatedDate
 	private LocalDateTime createdOn;
 }

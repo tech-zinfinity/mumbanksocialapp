@@ -15,7 +15,5 @@ public class Comment {
 	private String message;
 	private String userId;
 	private String userName;
-
-	@CreatedDate
 	private LocalDateTime createdOn;
 }

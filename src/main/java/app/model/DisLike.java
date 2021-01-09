@@ -15,6 +15,5 @@ public class DisLike {
 	
 	private String userId;
 	private String userName;
-	@CreatedDate
 	private LocalDateTime createdOn;
 }
