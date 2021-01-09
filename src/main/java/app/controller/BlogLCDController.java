@@ -37,11 +37,11 @@ public class BlogLCDController {
 		});
 	}
 	
-	addDisLike(){
-		
-	}
-	
-	addComment(){
-		
-	}
+//	addDisLike(){
+//		
+//	}
+//	
+//	addComment(){
+//		
+//	}
 }
