@@ -205,7 +205,9 @@ public class BlogLCDController {
 						liked.setLikes(flike);
 						likesRepo.save(liked).subscribe(slike ->{
 							blogRepo.findById(id).subscribe(blog ->{
-								blog.setLikes(blog.getLikes()-1);
+								if(blog.getDisLikes()>0) {
+									blog.setDisLikes(blog.getDisLikes()-1);
+								}								
 								blogRepo.save(blog).subscribe(fblog->{
 									sink.success(true);
 								}, er->{
@@ -238,7 +240,9 @@ public class BlogLCDController {
 						liked.setLikes(flike);
 						dislikesRepo.save(liked).subscribe(slike ->{
 							blogRepo.findById(id).subscribe(blog ->{
-								blog.setDisLikes(blog.getDisLikes()-1);
+								if(blog.getDisLikes()>0) {
+									blog.setDisLikes(blog.getDisLikes()-1);
+								}
 								blogRepo.save(blog).subscribe(fblog ->{
 									sink.success(true);
 								}, er->{

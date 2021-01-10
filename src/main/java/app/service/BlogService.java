@@ -139,7 +139,7 @@ public class BlogService {
 			   if(limit!=0) {
 				   query.limit(limit);
 			   }
-			   query.with(Sort.by(Sort.Direction.DESC, "publishedOn"));
+			   query.with(Sort.by(Sort.Direction.ASC, "publishedOn"));
 			   return ops.find(query, Blog.class);
 		}catch (Exception e) {
 			log.info("Fatal", e.getMessage());
