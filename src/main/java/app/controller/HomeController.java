@@ -93,6 +93,11 @@ public class HomeController {
 		return blogservice.getLatestBlogByCategory(id, 0);
 	}
 	
+	@GetMapping("/getAllActivePostsByCategoryIdAndLimit/{id}/{limit}")
+	public List<Blog> getAllActivePostsByCategoryId(@PathVariable("id") String id, @PathVariable("limit") int limit){
+		return blogservice.getLatestBlogByCategory(id, limit);
+	}
+	
 	@GetMapping("getAllRequestedBlogs")
 	public List<Blog> getAllRequestedBlogs() {
 		return blogservice.getAllRequestedBlogs();

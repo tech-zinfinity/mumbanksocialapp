@@ -1,6 +1,6 @@
 package app.service;
 
-import java.util.Comparator;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -139,7 +139,7 @@ public class BlogService {
 			   if(limit!=0) {
 				   query.limit(limit);
 			   }
-			   query.with(Sort.by(Sort.Direction.DESC, "publishedOn"));
+			   query.with(Sort.by(Sort.Direction.ASC, "publishedOn"));
 			   return ops.find(query, Blog.class);
 		}catch (Exception e) {
 			log.info("Fatal", e.getMessage());
@@ -184,5 +184,5 @@ public class BlogService {
 		}
 		return false;
 	}
-	
+		
 }
